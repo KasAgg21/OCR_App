@@ -1,6 +1,4 @@
-import 'dart:html';
-import 'dart:io';
-import 'dart:js';
+import 'dart:io' as io;
 
 import 'package:camera/camera.dart';
 import 'package:flutter/gestures.dart';
@@ -103,7 +101,7 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
             ,),
       Container(
       padding: const EdgeInsets.only(bottom: 30),
-      child: const Center(
+      child: Center(
       child: ElevatedButton(
           onPressed: _scanImage,
           child: Text('Scan Text')),
@@ -183,11 +181,11 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
   Future<void> _scanImage() async{
     if(_cameraController == null) {return;}
 
-    final navigator = Navigator.of(context as BuildContext);
+    final navigator = Navigator.of(context);
 
     try{
       final pictureFile = await _cameraController!.takePicture();
-      final file = File(pictureFile.path);
+      final file = io.File(pictureFile.path);
       final inputImage = InputImage.fromFile(file);
       final recoginizedText = await _textRecognizer.processImage(inputImage);
       await navigator.push(MaterialPageRoute(
@@ -195,7 +193,7 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
     }
     catch(e)
     {
-      ScaffoldMessenger.of(context as BuildContext).showSnackBar(const SnackBar(content: Text('An Error Occured while Scanning')));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('An Error Occured while Scanning')));
     }
   }
 }
